@@ -1,31 +1,36 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../provider/AuthProvider";
 
 const Register = () => {
 
-    const { createNewUser , setUser } = useContext(AuthContext);
+    const { createNewUser, setUser } = useContext(AuthContext);
+    const [error, setError] = useState({});
 
     const handleSubmit = (e) => {
         e.preventDefault();
         const form = new FormData(e.target)
         const name = form.get('name');
+        if (name.length < 5) {
+            setError({ ...error, name: 'must be more than 5 character long' });
+            return
+        }
         const photo = form.get('photo');
         const email = form.get('email');
         const password = form.get('password');
         console.log({ name, email, photo, password });
 
         createNewUser(email, password)
-        .then(result =>{
-            const user = result.user;
-            setUser(user)
-            console.log(user);
-        })
-        .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            console.log(errorCode, errorMessage);
-        });
+            .then(result => {
+                const user = result.user;
+                setUser(user)
+                console.log(user);
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.log(errorCode, errorMessage);
+            });
     };
 
 
@@ -41,6 +46,14 @@ const Register = () => {
                         </label>
                         <input name="name" type="text" placeholder="name" className="input input-bordered" required />
                     </div>
+                    {
+                        error.name && (
+                            <label className="label text-xs text-rose-600">
+                                {error.name}
+                            </label>
+                        )
+                    }
+
                     {/* Photo  */}
                     <div className="form-control">
                         <label className="label">
