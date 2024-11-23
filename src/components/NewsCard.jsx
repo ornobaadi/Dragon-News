@@ -1,12 +1,13 @@
 import { FaEye } from "react-icons/fa";
 import { AiFillStar } from "react-icons/ai";
+import { Link } from "react-router-dom";
 
 const NewsCard = ( props = {} ) => {
     const {news} = props || {};
     const {
         title,
         author,
-        thumbnail_url,
+        image_url,
         published_date,
         details,
         rating,
@@ -30,16 +31,16 @@ const NewsCard = ( props = {} ) => {
                 <h2 className="card-title">{title}</h2>
                 <figure className="my-4">
                     <img
-                        src={thumbnail_url}
+                        src={image_url}
                         alt="News Thumbnail"
-                        className="rounded-lg h-96 w-full object-scale-down"
+                        className="rounded-lg w-full "
                     />
                 </figure>
                 <p className="text-gray-700">
                     {details.slice(0, 120)}...{" "}
-                    <span className="text-primary cursor-pointer">
+                    <Link to={`/news/${news._id}`} className="text-primary cursor-pointer">
                         Read More
-                    </span>
+                    </Link>
                 </p>
                 <div className="flex justify-between items-center mt-4">
                     <div className="flex items-center gap-2">
